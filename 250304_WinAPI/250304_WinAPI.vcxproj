@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttractingBall.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyController.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttractingBall.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />

@@ -2,16 +2,19 @@
 #include "CommonFunction.h"
 #include "Tank.h"
 #include "HP.h"
+#include "AttractingBall.h"
 
 void Enemy::Init()
 {
 	pos = { (float)(rand() % WINSIZE_X) /*/ 2 - 300*/, 150 };
-	moveSpeed = 0.01f;
+	moveSpeed = 0.1f;
 	angle = -90.0f;
 	isAlive = true;
 	size = 30;
 	maxHP = 100;
 	hp = new HP(maxHP);
+	attractedTo = nullptr;
+	beingAttracted = false;
 }
 
 void Enemy::Release()
@@ -21,7 +24,14 @@ void Enemy::Release()
 
 void Enemy::Update()
 {
-	Move();
+	if (beingAttracted == false) {
+		Move();
+	}
+	else
+	{
+		BeAttracted();
+	}
+	
 	hp->Update();
 	IsDead();
 }
@@ -39,12 +49,24 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Move()
 {
+	
 	if (target)
 	{
 		angle = GetAngle(pos, target->GetPos());
 
 		pos.x += cosf(angle) * moveSpeed;
 		pos.y += sinf(angle) * moveSpeed;
+	}
+
+}
+
+void Enemy::BeAttracted()
+{
+	if (attractedTo != nullptr) {
+		angle = GetAngle(pos, attractedTo->GetPos());
+
+		pos.x += cosf(angle) * moveSpeed * 10;
+		pos.y += sinf(angle) * moveSpeed * 10;
 	}
 }
 

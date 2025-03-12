@@ -2,6 +2,8 @@
 #include "GameObject.h"
 
 class Missile;
+class AttractingBall;
+
 class Tank : public GameObject
 {
 private:
@@ -21,6 +23,10 @@ private:
 	//Missile* missile[10];
 	Missile* missiles;
 
+	//Áß·Âº¼
+	AttractingBall* ball;
+	bool isBallActivated;
+
 public:
 	void Init();	
 	void Release();	
@@ -29,12 +35,15 @@ public:
 
 	void Move();
 	void Fire();
+	void FireAttractingBall();
 	void RotateBarrel(float angle);
 	void Dead();
 
 	inline FPOINT GetPos() { return pos; }
 	inline int GetMissileCount() { return missileCount; }
 	inline Missile* GetMissiles() { return missiles; }
+	inline AttractingBall* GetBall() { return ball; }
+	inline void SetIsBallActivated(bool _isBallActivated) { this->isBallActivated = _isBallActivated; }
 
 	Tank();
 	~Tank();
