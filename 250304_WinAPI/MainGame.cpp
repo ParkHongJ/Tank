@@ -86,7 +86,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_TIMER:
 		this->Update();
 
-		InvalidateRect(g_hWnd, NULL, true);
+		InvalidateRect(g_hWnd, NULL, false);
 		break;
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -114,14 +114,34 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		mousePosX = LOWORD(lParam);
 		mousePosY = HIWORD(lParam);
 
-		InvalidateRect(g_hWnd, NULL, true);
+		InvalidateRect(g_hWnd, NULL, false);
 		break;
 	case WM_PAINT:
-		hdc = BeginPaint(g_hWnd, &ps);
+		static HDC hdc, MemDC, tmpDC;
+		static HBITMAP BackBit, oldBackBit;
+		static RECT bufferRT;
+		hdc = BeginPaint(hWnd, &ps);
+
+		GetClientRect(hWnd, &bufferRT);
+		MemDC = CreateCompatibleDC(hdc);
+		BackBit = CreateCompatibleBitmap(hdc, bufferRT.right, bufferRT.bottom);
+		oldBackBit = (HBITMAP)SelectObject(MemDC, BackBit);
+		PatBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
+		tmpDC = hdc;
+		hdc = MemDC;
+		MemDC = tmpDC;
 
 		this->Render(hdc);
 
-		EndPaint(g_hWnd, &ps);
+		tmpDC = hdc;
+		hdc = MemDC;
+		MemDC = tmpDC;
+		GetClientRect(hWnd, &bufferRT);
+		BitBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, MemDC, 0, 0, SRCCOPY);
+		SelectObject(MemDC, oldBackBit);
+		DeleteObject(BackBit);
+		DeleteDC(MemDC);
+		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, 0);
