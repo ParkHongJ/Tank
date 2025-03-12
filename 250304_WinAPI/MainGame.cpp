@@ -63,39 +63,49 @@ void MainGame::Update()
 					missile[i].SetIsActived(false);
 				}
 			}
-		}		
+		}
 	}
 
-	
-	for (int j = 0; j < enemyCount; j++)
-	{
-		if (enemies[j]->GetIsAlive() && tank->GetBall()->GetIsStarted())
+	if (tank->GetBall()->GetIsStarted() == true) {
+		for (int j = 0; j < enemyCount; j++)
 		{
-			float dist = GetDistance(enemies[j]->GetPos(), tank->GetBall()->GetPos());
-			float r = enemies[j]->GetSize() / 2 + tank->GetBall()->GetRangeSize() / 2;
-			float r2 = enemies[j]->GetSize() / 2 + tank->GetBall()->GetInnerSize() / 2;
-
-			if (dist < r && dist >= r2)
+			if (enemies[j]->GetIsAlive())
 			{
-				enemies[j]->SetAttractedTo(tank->GetBall());
-				enemies[j]->SetBeingAttracted(true);
-				continue;
-			}
+				float dist = GetDistance(enemies[j]->GetPos(), tank->GetBall()->GetPos());
+				float r = enemies[j]->GetSize() / 2 + tank->GetBall()->GetRangeSize() / 2;
+				float r2 = enemies[j]->GetSize() / 2 + tank->GetBall()->GetInnerSize() / 2;
 
-			else if (dist < r2) {
+				if (dist < r && dist >= r2)
+				{
+					enemies[j]->SetAttractedTo(tank->GetBall());
+					enemies[j]->SetBeingAttracted(true);
+					continue;
+				}
+
+				else if (dist < r2) {
+					enemies[j]->SetAttractedTo(nullptr);
+					enemies[j]->SetBeingAttracted(false);
+				}
+
+			}
+		}
+
+	}
+
+
+	else if (tank->GetBall()->GetIsStarted() == false) {
+		for (int j = 0; j < enemyCount; j++)
+		{
+			if (enemies[j]->GetIsAlive())
+			{
 				enemies[j]->SetAttractedTo(nullptr);
 				enemies[j]->SetBeingAttracted(false);
 			}
-			
-		}
-
-		else if (enemies[j]->GetIsAlive() && (tank->GetBall()->GetIsStarted() == false)) {
-			enemies[j]->SetAttractedTo(nullptr);
-			enemies[j]->SetBeingAttracted(false);
 		}
 	}
-	
 }
+	
+
 
 void MainGame::Render(HDC hdc)
 {

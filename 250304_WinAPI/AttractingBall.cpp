@@ -17,7 +17,7 @@ void AttractingBall::Update()
 	if (isStarted == false) {
 		Move();
 	}
-	else Attract();
+	else CountAttractTime();
 	
 	
 	if (IsOutofScreen()) {
@@ -50,13 +50,15 @@ void AttractingBall::Move()
 	}
 }
 
-FPOINT AttractingBall::Attract()
+void AttractingBall::CountAttractTime()
 {
-	if (isActivated) {
-		CheckTheRange();
+	ballTimeCount++;
+	if (ballTimeCount >= 350)
+	{
+		isStarted = false;
+		isActivated = false;
+		ballTimeCount = 0;
 	}
-
-	return { 0,0 };
 }
 
 bool AttractingBall::IsOutofScreen()
@@ -82,6 +84,7 @@ AttractingBall::AttractingBall()
 	isStarted = false;
 	isActivated = false;
 	moveSpeed = 10.0f;
+	ballTimeCount = 0;
 
 }
 

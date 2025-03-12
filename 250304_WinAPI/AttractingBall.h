@@ -10,12 +10,14 @@ private:
 	bool isStarted;
 	bool isActivated;
 	float moveSpeed;
+	float ballTimeCount;
 
 	HBRUSH ballBrush = CreateSolidBrush(RGB(255, 200, 200));
 	
 	
 public:
 	inline void SetIsActivated(bool activated) { this->isActivated = activated; }
+	inline bool GetIsActivated() { return isActivated; }
 
 	inline void SetIsStarted(bool _is) { this->isStarted = _is; }
 	inline bool GetIsStarted() { return isStarted; }
@@ -35,7 +37,7 @@ public:
 
 	void CheckTheRange();
 	void Move();
-	FPOINT Attract();
+	void CountAttractTime();
 
 	bool IsOutofScreen();
 

@@ -103,12 +103,13 @@ void Tank::Fire()
 
 void Tank::FireAttractingBall()
 {
-	if (isBallActivated == false) {
+	if ((ball->GetIsActivated() == false) && (ball->GetIsStarted() == false)) {
 		ball->Init(barrelEnd, barrelAngle);
-		isBallActivated = true;
+		//isBallActivated = true;
 	}
 
-	else {
+	else if((ball->GetIsActivated() == true) && (ball->GetIsStarted() == false))
+	{
 		ball->SetIsStarted(true);
 		ball->SetInnerSize(30);
 	}
