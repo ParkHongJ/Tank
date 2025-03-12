@@ -10,7 +10,9 @@
 	실습3. 미사일 - 적, 적 - 탱크 충돌 처리
 	실습4. 5번째 미사일 마다 유도미사일 발사
 			(가장 가까운 적을 따라 가서 맞춘다.)
-*/
+*///
+
+
 
 void MainGame::Init()
 {
@@ -20,6 +22,7 @@ void MainGame::Init()
 	enemy = new Enemy;
 	enemy->Init();
 	enemy->SetTarget(tank);
+	int a = 10;
 }
 
 void MainGame::Release()
