@@ -25,6 +25,7 @@ public:
 	inline float GetRangeSize() { return rangeSize; }
 
 	inline float GetInnerSize() { return innerSize; }
+	inline void SetInnerSize(int _size) { this->innerSize = _size; }
 	
 
 	void Init(FPOINT _pos, float _dir);

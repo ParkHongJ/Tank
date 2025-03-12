@@ -79,19 +79,19 @@ void MainGame::Update()
 			{
 				enemies[j]->SetAttractedTo(tank->GetBall());
 				enemies[j]->SetBeingAttracted(true);
-				//enemies[j]->GetHP()->BeAttacked(missile[i].Attack());
-				//enemyController->AttackEnemy(enemies[j], missile[i].Attack());
-				//enemy->GetHP()->BeAttacked(missile[i].Attack());
-				//enemyController->DestroyEnemy(enemies[j]);
-				/*enemies[j]->GetHP()->BeAttacked(missile[i].Attack());*/
-				//missile[i].SetIsActived(false);
+				continue;
 			}
 
 			else if (dist < r2) {
+				enemies[j]->SetAttractedTo(nullptr);
 				enemies[j]->SetBeingAttracted(false);
-				tank->GetBall()->SetIsActivated(false);
-				tank->SetIsBallActivated(false);
 			}
+			
+		}
+
+		else if (enemies[j]->GetIsAlive() && (tank->GetBall()->GetIsStarted() == false)) {
+			enemies[j]->SetAttractedTo(nullptr);
+			enemies[j]->SetBeingAttracted(false);
 		}
 	}
 	
@@ -122,10 +122,10 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		switch (wParam)
 		{
 		case 'a': case 'A':
-			tank->RotateBarrel(2);
+			tank->RotateBarrel(5);
 			break;
 		case 'd': case 'D':
-			tank->RotateBarrel(-2);
+			tank->RotateBarrel(-5);
 			break;
 
 		case 'q': case 'Q':

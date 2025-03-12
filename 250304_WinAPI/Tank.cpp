@@ -108,7 +108,10 @@ void Tank::FireAttractingBall()
 		isBallActivated = true;
 	}
 
-	else ball->SetIsStarted(true);
+	else {
+		ball->SetIsStarted(true);
+		ball->SetInnerSize(30);
+	}
 	
 
 }
