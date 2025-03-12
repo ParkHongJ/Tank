@@ -2,6 +2,7 @@
 #include "Tank.h"
 #include "Enemy.h"
 #include "Missile.h"
+#include "EnemyController.h"
 #include "CommonFunction.h"
 
 /*
@@ -16,13 +17,15 @@
 
 void MainGame::Init()
 {
+	srand(time(NULL));
+
 	tank = new Tank;
 	tank->Init();
 
-	enemy = new Enemy;
-	enemy->Init();
-	enemy->SetTarget(tank);
 	int a = 10;
+
+	enemyController = new EnemyController;
+	enemyController->Init(tank);
 }
 
 void MainGame::Release()
@@ -33,43 +36,49 @@ void MainGame::Release()
 		delete tank;
 	}
 
-	if (enemy)
+	if (enemyController)
 	{
-		enemy->Release();
-		delete enemy;
+		enemyController->Release();
+		delete enemyController;
 	}
 }
 
 void MainGame::Update()
 {
 	if (tank)	tank->Update();
-	if (enemy)	enemy->Update();
+	if (enemyController) enemyController->Update();
 
 	// 面倒贸府 固荤老 <-> 利
 	Missile* missile = tank->GetMissiles();
+
+	int enemyCount = 0;
+	Enemy** enemies = enemyController->GetEnemies(enemyCount);
+
 	for (int i = 0; i < tank->GetMissileCount(); i++)
 	{
-		if (enemy->GetIsAlive() && missile[i].GetIsActived())
+		for (int j = 0; j < enemyCount; j++)
 		{
-			float dist = GetDistance(enemy->GetPos(), missile[i].GetPos());
-			float r = enemy->GetSize() / 2 + missile[i].GetSize() / 2;
-
-			if (dist < r)
+			if (enemies[j]->GetIsAlive() && missile[i].GetIsActived())
 			{
-				enemy->SetIsAlive(false);
-				missile[i].SetIsActived(false);
+				float dist = GetDistance(enemies[j]->GetPos(), missile[i].GetPos());
+				float r = enemies[j]->GetSize() / 2 + missile[i].GetSize() / 2;
+
+				if (dist < r)
+				{
+					enemyController->DestroyEnemy(enemies[j]);
+					/*enemies[j]->SetIsAlive(false);*/
+					missile[i].SetIsActived(false);
+				}
 			}
-		}
+		}		
 	}
 }
 
 void MainGame::Render(HDC hdc)
 {
-	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
-	TextOut(hdc, 20, 60, szText, wcslen(szText));
 
 	if (tank)	tank->Render(hdc);
-	if (enemy)	enemy->Render(hdc);
+	if (enemyController) enemyController->Render(hdc);
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

@@ -4,7 +4,7 @@
 
 void Enemy::Init()
 {
-	pos = { WINSIZE_X / 2 - 300, 150 };
+	pos = { (float)(rand() % WINSIZE_X) /*/ 2 - 300*/, 150 };
 	moveSpeed = 0.01f;
 	angle = -90.0f;
 	isAlive = true;
