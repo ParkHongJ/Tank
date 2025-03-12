@@ -2,6 +2,11 @@
 #include "GameObject.h"
 
 class Tank;
+
+struct EnemyInfo
+{
+
+};
 class Enemy : public GameObject	// is-a
 {
 private:
@@ -26,7 +31,7 @@ public:
 	inline void SetTarget(Tank* target) { this->target = target; }
 	inline FPOINT GetPos() { return pos; }
 	inline int GetSize() { return size; }
-
+	inline void SetMoveSpeed(float speed) { moveSpeed = speed; }
 	Enemy();
 	~Enemy();
 
