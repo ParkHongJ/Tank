@@ -1,6 +1,7 @@
 #include "Tank.h"
 #include "CommonFunction.h"
 #include "Missile.h"
+#include "AttractingBall.h"
 
 void Tank::Init()
 {
@@ -25,6 +26,9 @@ void Tank::Init()
 		//(*). ->
 		missiles[i].Init();
 	}
+
+	ball = new AttractingBall;
+	isBallActivated = false;
 
 }
 
@@ -52,6 +56,8 @@ void Tank::Update()
 			missiles[i].Update();
 		}
 	}
+
+	ball->Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -70,6 +76,8 @@ void Tank::Render(HDC hdc)
 			missiles[i].Render(hdc);
 		}
 	}
+
+	ball->Render(hdc);
 }
 
 void Tank::Move()
@@ -91,6 +99,18 @@ void Tank::Fire()
 			}
 		}
 	}
+}
+
+void Tank::FireAttractingBall()
+{
+	if (isBallActivated == false) {
+		ball->Init(barrelEnd, barrelAngle);
+		isBallActivated = true;
+	}
+
+	else ball->SetIsStarted(true);
+	
+
 }
 
 void Tank::RotateBarrel(float angle)

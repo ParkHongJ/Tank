@@ -21,7 +21,7 @@ public:
 	
 	inline int GetNowNum() { return nowNum; }
 	void BeAttacked(int attNum);
-	inline void BeHealed(int healNum) { this->nowNum += healNum; }
+	inline void BeHealed(int healNum) { this->nowNum += healNum; CaculateForBar();}
 	inline void SetNowNum(int _nowNum) { this->nowNum = _nowNum; }
 
 	inline float GetMaxLength() { return maxLength; }

@@ -5,6 +5,7 @@
 #include "EnemyController.h"
 #include "CommonFunction.h"
 #include "HP.h"
+#include "AttractingBall.h"
 
 void MainGame::Init()
 {
@@ -12,8 +13,6 @@ void MainGame::Init()
 
 	tank = new Tank;
 	tank->Init();
-
-	int a = 10;
 
 	enemyController = new EnemyController;
 	enemyController->Init(tank);
@@ -66,6 +65,36 @@ void MainGame::Update()
 			}
 		}		
 	}
+
+	
+	for (int j = 0; j < enemyCount; j++)
+	{
+		if (enemies[j]->GetIsAlive() && tank->GetBall()->GetIsStarted())
+		{
+			float dist = GetDistance(enemies[j]->GetPos(), tank->GetBall()->GetPos());
+			float r = enemies[j]->GetSize() / 2 + tank->GetBall()->GetRangeSize() / 2;
+			float r2 = enemies[j]->GetSize() / 2 + tank->GetBall()->GetInnerSize() / 2;
+
+			if (dist < r && dist >= r2)
+			{
+				enemies[j]->SetAttractedTo(tank->GetBall());
+				enemies[j]->SetBeingAttracted(true);
+				//enemies[j]->GetHP()->BeAttacked(missile[i].Attack());
+				//enemyController->AttackEnemy(enemies[j], missile[i].Attack());
+				//enemy->GetHP()->BeAttacked(missile[i].Attack());
+				//enemyController->DestroyEnemy(enemies[j]);
+				/*enemies[j]->GetHP()->BeAttacked(missile[i].Attack());*/
+				//missile[i].SetIsActived(false);
+			}
+
+			else if (dist < r2) {
+				enemies[j]->SetBeingAttracted(false);
+				tank->GetBall()->SetIsActivated(false);
+				tank->SetIsBallActivated(false);
+			}
+		}
+	}
+	
 }
 
 void MainGame::Render(HDC hdc)
@@ -73,6 +102,7 @@ void MainGame::Render(HDC hdc)
 
 	if (tank)	tank->Render(hdc);
 	if (enemyController) enemyController->Render(hdc);
+	//ball->Render(hdc);
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
@@ -96,6 +126,10 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			break;
 		case 'd': case 'D':
 			tank->RotateBarrel(-2);
+			break;
+
+		case 'q': case 'Q':
+			tank->FireAttractingBall();
 			break;
 		}
 		break;
@@ -132,6 +166,8 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		MemDC = tmpDC;
 
 		this->Render(hdc);
+
+
 
 		tmpDC = hdc;
 		hdc = MemDC;
