@@ -23,7 +23,7 @@ public:
 	void Render(HDC hdc);
 	void Release();
 	void DestroyEnemy(Enemy* destroyEnemy);
-
+	void AttackEnemy(Enemy* enemy, int Damage);
 	Enemy** GetEnemies(int& EnemyCount);
 private:
 	bool StartRound();

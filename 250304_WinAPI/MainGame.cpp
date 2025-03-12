@@ -4,16 +4,7 @@
 #include "Missile.h"
 #include "EnemyController.h"
 #include "CommonFunction.h"
-
-/*
-	실습1. 적 클래스 생성 ( 화면 밖, 랜덤한 위치)
-	실습2. 적은 탱크를 향해 다가온다.
-	실습3. 미사일 - 적, 적 - 탱크 충돌 처리
-	실습4. 5번째 미사일 마다 유도미사일 발사
-			(가장 가까운 적을 따라 가서 맞춘다.)
-*///
-
-
+#include "HP.h"
 
 void MainGame::Init()
 {
@@ -48,7 +39,6 @@ void MainGame::Update()
 	if (tank)	tank->Update();
 	if (enemyController) enemyController->Update();
 
-	// 충돌처리 미사일 <-> 적
 	Missile* missile = tank->GetMissiles();
 
 	int enemyCount = 0;
@@ -65,8 +55,12 @@ void MainGame::Update()
 
 				if (dist < r)
 				{
-					enemyController->DestroyEnemy(enemies[j]);
-					/*enemies[j]->SetIsAlive(false);*/
+
+					//enemies[j]->GetHP()->BeAttacked(missile[i].Attack());
+					enemyController->AttackEnemy(enemies[j], missile[i].Attack());
+					//enemy->GetHP()->BeAttacked(missile[i].Attack());
+					//enemyController->DestroyEnemy(enemies[j]);
+					/*enemies[j]->GetHP()->BeAttacked(missile[i].Attack());*/
 					missile[i].SetIsActived(false);
 				}
 			}

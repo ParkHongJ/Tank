@@ -2,11 +2,8 @@
 #include "GameObject.h"
 
 class Tank;
-
-struct EnemyInfo
-{
-
-};
+class HP;
+class EnemyController;
 class Enemy : public GameObject	// is-a
 {
 private:
@@ -16,7 +13,8 @@ private:
 	bool isAlive;
 	int size;
 	Tank* target;
-
+	int maxHP;
+	HP* hp;
 public:
 	void Init();		
 	void Release();		
@@ -24,6 +22,7 @@ public:
 	void Render(HDC hdc);
 
 	void Move();
+	void IsDead();
 
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetIsAlive() { return isAlive;
@@ -31,7 +30,10 @@ public:
 	inline void SetTarget(Tank* target) { this->target = target; }
 	inline FPOINT GetPos() { return pos; }
 	inline int GetSize() { return size; }
+	inline HP* GetHP() { return hp; }
 	inline void SetMoveSpeed(float speed) { moveSpeed = speed; }
+	
+	void GetDamaged(int Damage);
 	Enemy();
 	~Enemy();
 

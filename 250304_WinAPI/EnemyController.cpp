@@ -1,5 +1,6 @@
 #include "EnemyController.h"
 #include "Enemy.h"
+
 void EnemyController::Init(GameObject* Tank)
 {
 	//3 round
@@ -65,6 +66,29 @@ void EnemyController::DestroyEnemy(Enemy* destroyEnemy)
 			break;
 		}
 	}
+
+	--CurrentEnemyCount;
+
+	//라운드끝
+	if (CurrentEnemyCount <= 0)
+	{
+		isRoundEnded = true;
+	}
+}
+
+void EnemyController::AttackEnemy(Enemy* enemy, int Damage)
+{
+	for (int i = 0; i < Rounds[CurrentRound].EnemyCount; i++)
+	{
+		if (Enemies[i] == enemy)
+		{
+			Enemies[i]->GetDamaged(Damage);
+			break;
+		}
+	}
+
+	if (enemy->GetIsAlive())
+		return;
 
 	--CurrentEnemyCount;
 
