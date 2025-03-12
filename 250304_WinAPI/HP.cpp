@@ -2,12 +2,15 @@
 
 void HP::BeAttacked(int attNum)
 {
+	
 	if (isFull == true) {
 		this->nowNum -= attNum;
 		isFull = false;
 	}
 
 	else this->nowNum -= attNum;
+
+	CaculateForBar();
 }
 
 float HP::CaculateForBar()
@@ -27,7 +30,7 @@ void HP::Release()
 
 void HP::Update()
 {
-	CaculateForBar();
+	
 }
 
 void HP::Render(HDC hdc, FPOINT pos)
