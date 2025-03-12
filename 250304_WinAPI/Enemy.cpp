@@ -84,6 +84,11 @@ void Enemy::GetDamaged(int Damage)
 	IsDead();
 }
 
+void Enemy::SetHp(int Hp)
+{
+	hp->SetHp(Hp);
+}
+
 Enemy::Enemy()
 {
 }

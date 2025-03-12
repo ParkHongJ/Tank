@@ -6,16 +6,16 @@ void EnemyController::Init(GameObject* Tank)
 {
 	//3 round
 	Rounds[0].EnemyCount = 1;
-	Rounds[0].Hp = 10;
-	Rounds[0].EnemySpeed = 0.1f;
+	Rounds[0].Hp = 100;
+	Rounds[0].EnemySpeed = 0.15f;
 	
 	Rounds[1].EnemyCount = 3;
-	Rounds[1].Hp = 30;
-	Rounds[1].EnemySpeed = 0.25f;
+	Rounds[1].Hp = 130;
+	Rounds[1].EnemySpeed = 0.45f;
 
 	Rounds[2].EnemyCount = 5;
-	Rounds[2].Hp = 50;
-	Rounds[2].EnemySpeed = 0.35f;
+	Rounds[2].Hp = 150;
+	Rounds[2].EnemySpeed = 0.65f;
 
 	Target = Tank;
 	StartRound();
@@ -145,6 +145,7 @@ void EnemyController::InitEnemy(const Round& round)
 		Enemies[i]->Init();
 		Enemies[i]->SetTarget((Tank*)Target);
 		Enemies[i]->SetMoveSpeed(round.EnemySpeed);
+		Enemies[i]->SetHp(round.Hp);
 		//todo EnemySetup hp
 	}
 }

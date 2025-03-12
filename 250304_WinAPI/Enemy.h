@@ -41,6 +41,8 @@ public:
 	inline void SetMoveSpeed(float speed) { moveSpeed = speed; }
 	
 	void GetDamaged(int Damage);
+
+	void SetHp(int Hp);
 	Enemy();
 	~Enemy();
 

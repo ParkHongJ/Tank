@@ -25,7 +25,7 @@ public:
 	inline void SetNowNum(int _nowNum) { this->nowNum = _nowNum; }
 
 	inline float GetMaxLength() { return maxLength; }
-
+	inline void SetHp(int hp) { this->nowNum = hp; this->maxNum = hp; }
 	float CaculateForBar();
 
 	void Init(); 
