@@ -11,6 +11,7 @@ private:
 	float angle;
 	FPOINT destination;
 	int size;
+	int attNum{ 20 };
 
 public:
 	void Init();		
@@ -31,6 +32,8 @@ public:
 
 	inline void SetAngle(float angle) { this->angle = angle; }
 	inline int GetSize() { return size; }
+
+	inline int Attack() { return attNum; }
 
 	Missile();
 	~Missile();

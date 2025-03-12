@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Missile.h"
 #include "CommonFunction.h"
+#include "HP.h"
 
 /*
 	실습1. 적 클래스 생성 ( 화면 밖, 랜덤한 위치)
@@ -56,7 +57,7 @@ void MainGame::Update()
 
 			if (dist < r)
 			{
-				enemy->SetIsAlive(false);
+				enemy->GetHP()->BeAttacked(missile[i].Attack());
 				missile[i].SetIsActived(false);
 			}
 		}
