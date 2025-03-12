@@ -1,5 +1,6 @@
 #include "EnemyController.h"
 #include "Enemy.h"
+#include "Fireworks.h"
 
 void EnemyController::Init(GameObject* Tank)
 {
@@ -18,23 +19,26 @@ void EnemyController::Init(GameObject* Tank)
 
 	Target = Tank;
 	StartRound();
+
+	fireWorks = new Fireworks;
+	fireWorks->Init();
 }
 
 void EnemyController::Update()
 {
-	if (isRoundEnded == true)
-	{
-		//Å¸°ÙÀÌ ¾ø¾î¼­ ½ÇÆÐÇÔ
-		if (StartRound() == false)
-		{
-			return;
-		}
-	}
+	if (isRoundEnded == true && StartRound() == false)
+		return;
 
 	for (int i = 0; i < Rounds[CurrentRound].EnemyCount; i++)
 	{
 		if (Enemies[i]->GetIsAlive()) Enemies[i]->Update();
 	}
+
+
+	if (isRoundEnded == true || bClear == false)
+		return;
+
+	fireWorks->Update();
 }
 
 void EnemyController::Render(HDC hdc)
@@ -46,34 +50,23 @@ void EnemyController::Render(HDC hdc)
 	{
 		if (Enemies[i]->GetIsAlive()) Enemies[i]->Render(hdc);
 	}
+
+	if (isRoundEnded == true || bClear == false)
+		return;
+
+	wsprintf(szText, TEXT("WIN"));
+	TextOut(hdc, WINSIZE_X / 2, WINSIZE_Y / 2, szText, wcslen(szText));
+
+	fireWorks->Render(hdc);
 }
 
 void EnemyController::Release()
 {
+	fireWorks->Release();
+	delete fireWorks;
+
 	delete[] Enemies;
 	Enemies = nullptr;
-}
-
-void EnemyController::DestroyEnemy(Enemy* destroyEnemy)
-{
-	//Àû »èÁ¦
-
-	for (int i = 0; i < Rounds[CurrentRound].EnemyCount; i++)
-	{
-		if (Enemies[i] == destroyEnemy)
-		{
-			Enemies[i]->SetIsAlive(false);
-			break;
-		}
-	}
-
-	--CurrentEnemyCount;
-
-	//¶ó¿îµå³¡
-	if (CurrentEnemyCount <= 0)
-	{
-		isRoundEnded = true;
-	}
 }
 
 void EnemyController::AttackEnemy(Enemy* enemy, int Damage)
@@ -92,10 +85,17 @@ void EnemyController::AttackEnemy(Enemy* enemy, int Damage)
 
 	--CurrentEnemyCount;
 
-	//¶ó¿îµå³¡
+
+	//ë¼ìš´ë“œ ì¢…ë£Œ
 	if (CurrentEnemyCount <= 0)
 	{
 		isRoundEnded = true;
+	}
+
+	if (isRoundEnded && CurrentRound >= MAX_ROUND - 1)
+	{
+		isRoundEnded = false;
+		bClear = true;
 	}
 }
 
@@ -107,7 +107,6 @@ Enemy** EnemyController::GetEnemies(OUT int& EnemyCount)
 
 bool EnemyController::StartRound()
 {
-	//Å¸°ÙÀÌ ¾ø´Ù¸é ¶ó¿îµå »ý¼º ½ÇÆÐ
 	if (Target == nullptr)
 		return false;
 
@@ -146,6 +145,6 @@ void EnemyController::InitEnemy(const Round& round)
 		Enemies[i]->Init();
 		Enemies[i]->SetTarget((Tank*)Target);
 		Enemies[i]->SetMoveSpeed(round.EnemySpeed);
-		//todo EnemySetup
+		//todo EnemySetup hp
 	}
 }

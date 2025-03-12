@@ -1,8 +1,9 @@
 #pragma once
 #include "config.h"
-
+#define MAX_ROUND 3
 class Enemy;
 class GameObject;
+class Fireworks;
 
 struct Round
 {
@@ -22,22 +23,25 @@ public:
 	void Update();
 	void Render(HDC hdc);
 	void Release();
-	void DestroyEnemy(Enemy* destroyEnemy);
 	void AttackEnemy(Enemy* enemy, int Damage);
-	Enemy** GetEnemies(int& EnemyCount);
+	Enemy** GetEnemies(OUT int& EnemyCount);
+
 private:
 	bool StartRound();
 	void ReleaseEnemies(int round);
 	void InitEnemy(const Round& round);
 
 private:
-	Round Rounds[3];
+	Round Rounds[MAX_ROUND];
 	GameObject* Target = nullptr;
-	//ÇöÀç ½ÇÇàÁßÀÎ ¶ó¿îµåÀÇ ÀûµéÀÌ ´ã±ä´Ù
+	//ì ë“¤
 	Enemy** Enemies = nullptr;
 	int CurrentEnemyCount = 0;
 	int CurrentRound = -1;
 	bool isRoundEnded = true;
 	wchar_t szText[128];
+	bool bClear = false;
+
+	Fireworks* fireWorks = nullptr;
 };
 
